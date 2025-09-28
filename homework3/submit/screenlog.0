@@ -1,0 +1,181 @@
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ cat rinin[K[K[K[Kunincontainer.sh 
+[?2004l#!/bin/sh
+
+# This command runs the script using the container directly without wrapper
+# It is best for running on batch systems
+apptainer run -B /projects:/projects /projects/hep/fs10/mnxb11/containers/mnxb11_al9.latest.sif ./buildnrun_picalc.sh
+
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ cat calculatepi.sbatch-hugohenriksson.sh 
+[?2004l#!/bin/sh
+
+#SBATCH -J "MNXB11 Pi approximation"
+#SBATCH --time=00:1:00 
+#SBATCH -A hep2023-1-6
+
+apptainer run -B /projects:/projects /projects/hep/fs10/mnxb11/containers/mnxb11_al9.latest.sif ./buildnrun_picalc.sh 9
+
+WHEREAMI=$(pwd)
+WHOAMI=$(id)
+
+echo "I am $WHOAMI and I live in $WHEREAMI"
+echo "I am being run on :"
+hostname
+echo "The time I have worked is: "
+time
+echo "I am a very smart script, look at me count to 10:"
+for i in {1..10}; do
+    echo "$i";
+done
+FOODARRAY=(Pizza Hamburger Blodpudding)
+echo "My favorite foods are:"
+for i in "${FOODARRAY[@]}"; do echo "$i"; done
+
+echo "I'm tired, sleepy..."
+sleep 5m
+
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sbatch calculatepi.sbatch-hugohenriksson.sh 
+[?2004lSubmitted batch job 1612267
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ scontrol show jobid 1612267
+[?2004lJobId=1612267 JobName=MNXB11 Pi approximation
+   UserId=critglasses(33219) GroupId=mnxb11(32200) MCS_label=N/A
+   Priority=67239 Nice=0 Account=hep2023-1-6 QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:04 TimeLimit=00:01:00 TimeMin=N/A
+   SubmitTime=2025-09-28T12:07:28 EligibleTime=2025-09-28T12:07:28
+   AccrueTime=2025-09-28T12:07:28
+   StartTime=2025-09-28T12:07:28 EndTime=2025-09-28T12:08:28 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2025-09-28T12:07:28 Scheduler=Main
+   Partition=hep AllocNode:Sid=cosmos-pkf:3128849
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=cx12
+   BatchHost=cx12
+   NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=1,mem=5300M,node=1,billing=1
+   AllocTRES=cpu=1,mem=5300M,node=1,billing=1
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryCPU=5300M MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts/calculatepi.sbatch-hugohenriksson.sh
+   WorkDir=/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts
+   StdErr=/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts/slurm-1612267.out
+   StdIn=/dev/null
+   StdOut=/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts/slurm-1612267.out
+   Power=
+   
+
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sinfo -p hep
+[?2004lPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+hep          up 5-00:00:00      1    mix cx12
+hep          up 5-00:00:00      8  alloc cx[04-11]
+hep          up 5-00:00:00      3   idle cx[13-15]
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612267       hep MNXB11 P critglas  R       0:21      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612267       hep MNXB11 P critglas  R       0:38      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612267       hep MNXB11 P critglas  R       0:57      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612267       hep MNXB11 P critglas  R       1:03      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ ls
+[?2004l[0m[01;32mbuildnrun_picalc.sh[0m                   [01;32mrunincontainer.sh[0m  WASTED.sbatch
+calculatepi.sbatch                    screenlog.0
+calculatepi.sbatch-hugohenriksson.sh  slurm-1612267.out
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ cat slurm-1612267.out 
+[?2004l/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts/buildnrun_picalc.sh
+BASEDIR is /home/critglasses/git/MNXB11-homework/homework3/calculatePI
+Modifying source code with parameter: 9
+BUILD path is /home/critglasses/git/MNXB11-homework/homework3/calculatePI/build
+Creating directories and compiling
+Build path already existing
+Building code...
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/critglasses/git/MNXB11-homework/homework3/calculatePI/build
+[ 50%] Building CXX object src/CMakeFiles/main.dir/main.cxx.o
+[100%] Linking CXX executable main
+[100%] Built target main
+Built executable /home/critglasses/git/MNXB11-homework/homework3/calculatePI/build/src/main
+Starting computation...
+/home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts/buildnrun_picalc.sh: line 36: 1247294 Killed                  $EXECPATH
+Result can be found in /home/critglasses/git/MNXB11-homework/homework3/calculatePI/build
+I am uid=33219(critglasses) gid=32200(mnxb11) groups=32200(mnxb11) and I live in /home/critglasses/git/MNXB11-homework/homework3/calculatePI/scripts
+I am being run on :
+cx12
+The time I have worked is: 
+user	0m10.10s
+sys	0m9.73s
+I am a very smart script, look at me count to 10:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+My favorite foods are:
+Pizza
+Hamburger
+Blodpudding
+I'm tired, sleepy...
+slurmstepd: error: *** JOB 1612267 ON cx12 CANCELLED AT 2025-09-28T12:08:33 DUE TO TIME LIMIT ***
+slurmstepd: error: Detected 1 oom_kill event in StepId=1612267.batch. Some of the step tasks have been OOM Killed.
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ cat slurm-1612267.out ls[Ksqueue -u critglasses[9Pinfo -p hepcontrol show jobid 1612267batch calculatepi.sbatch-hugohenriksson.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Prunincontainer[C[C[C[C[19@calculatepi.sbatch-hugohenriksson[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[17Pcontrol show jobid 1612267[15Pinfo -p hepqueue -u critglassesls[Kcat slurm-1612267.out [Ksbatch -J WASTED1 WASTED.sbatch 
+[?2004lSubmitted batch job 1612269
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sbatch -J WASTED1 WASTED.sbatch [C[C[1P[1@2
+[?2004lSubmitted batch job 1612270
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sbatch -J WASTED2 WASTED.sbatch [C[C[C[C[1P[1@3
+[?2004lSubmitted batch job 1612271
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sbatch -J WASTED3 WASTED.sbatch [1P[1@4
+[?2004lSubmitted batch job 1612272
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ sbatch -J WASTED4 WASTED.sbatch [1P[1@5
+[?2004lSubmitted batch job 1612273
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612273       hep  WASTED5 critglas  R    INVALID      1 cx12
+           1612272       hep  WASTED4 critglas  R       0:04      1 cx12
+           1612271       hep  WASTED3 critglas  R       0:11      1 cx12
+           1612270       hep  WASTED2 critglas  R       0:19      1 cx12
+           1612269       hep  WASTED1 critglas  R       0:25      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ scancel -n WASTER[KD1
+[?2004lkcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ scancel -n WASTED1queue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612273       hep  WASTED5 critglas  R       0:14      1 cx12
+           1612272       hep  WASTED4 critglas  R       0:21      1 cx12
+           1612271       hep  WASTED3 critglas  R       0:28      1 cx12
+           1612270       hep  WASTED2 critglas  R       0:36      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses[3Pcancel -n WASTED1[K5
+[?2004lkcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ scancel -n WASTED5queue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612272       hep  WASTED4 critglas  R       0:30      1 cx12
+           1612271       hep  WASTED3 critglas  R       0:37      1 cx12
+           1612270       hep  WASTED2 critglas  R       0:45      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses[3Pcancel -n WASTED5[K2
+[?2004lkcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ scancel -n WASTED2queue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612272       hep  WASTED4 critglas  R       0:40      1 cx12
+           1612271       hep  WASTED3 critglas  R       0:47      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612272       hep  WASTED4 critglas  R       0:55      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612272       hep  WASTED4 critglas  R       1:01      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ squeue -u critglasses
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           1612272       hep  WASTED4 critglas  R       1:07      1 cx12
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ echo "Thanks for watching, leave a like in the comment section below"[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K[K[K[Kif you  enjoyed the video"
+[?2004lThanks for watching, leave a like if you enjoyed the video
+kcritglasses@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[critglasses@cosmos-pkf scripts]$ exit
+[?2004lexit
